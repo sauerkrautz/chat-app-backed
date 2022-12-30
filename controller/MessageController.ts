@@ -9,13 +9,30 @@ export const addMessage = async (req: Request, res: Response) => {
         body: req.body.body,
       },
     });
-    res
-      .status(200)
-      .json({
-        status: 200,
-        statusText: "OK",
-        message: "Message Sent Successfully",
-      });
+    res.status(200).json({
+      status: 200,
+      statusText: "OK",
+      message: "Message Sent Successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      statusText: "FAIL",
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
+
+export const getMessages = async (req: Request, res: Response) => {
+  try {
+    const messages = await prisma.message.findMany();
+
+    res.status(200).json({
+      status: 200,
+      statusText: "OK",
+      messages,
+    });
   } catch (error) {
     res.status(500).json({
       status: 500,

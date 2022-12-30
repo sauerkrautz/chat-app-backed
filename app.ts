@@ -7,6 +7,7 @@ import prisma from "./config/Db";
 import UserRoute from "./routes/UserRoute";
 import AuthRoute from "./routes/AuthRoute";
 import ConversationRoute from "./routes/ConversationRoute";
+import MessageRoute from "./routes/MessageRoute";
 
 const app = express();
 
@@ -46,6 +47,8 @@ app.use(AuthRoute);
 app.use(UserRoute);
 
 app.use(ConversationRoute);
+
+app.use(MessageRoute);
 
 app.listen(process.env.APP_PORT, () => {
   console.log("connected to prisma sql --- chat-app");

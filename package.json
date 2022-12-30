@@ -22,6 +22,7 @@
   "main": "app.ts",
   "scripts": {
     "start": "nodemon app.ts",
+    "build": "tsc -p ./ && nodemon ./dist/app.js",
     "compiled": "nodemon ./dist/app.js"
   }
 }

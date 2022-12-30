@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch", "deno"]
 }
 
 datasource db {
@@ -26,12 +27,13 @@ model User {
 model Conversation {
   uuid      String    @id @default(uuid())
   user      User      @relation(fields: [sender], references: [uuid])
-  sender    String    @unique
-  receiver  String    @unique
+  sender    String
+  receiver  String
   messages  Message[]
   createdAt DateTime  @default(now())
   UpdatedAt DateTime  @updatedAt
 
+  @@unique([sender, receiver])
   @@index([sender, receiver])
 }
 

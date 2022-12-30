@@ -1,0 +1,9 @@
+POST http://localhost:5000/conversation
+Content-Type: application/json
+
+{
+    "email": "user@gmail.com"
+}
+
+###
+GET http://localhost:5000/conversations

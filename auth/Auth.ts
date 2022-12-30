@@ -14,6 +14,7 @@ export const signIn = async (req: Request, res: Response) => {
         uuid: true,
         password: true,
         email: true,
+        username: true,
       },
     });
 
@@ -31,7 +32,12 @@ export const signIn = async (req: Request, res: Response) => {
       req.session.userid = user.uuid;
       return res
         .status(200)
-        .json({ status: 200, statusText: "OK", message: "Authenticated" });
+        .json({
+          status: 200,
+          statusText: "OK",
+          message: "Authenticated",
+          user,
+        });
     }
   } catch (error) {
     res.status(500).json({

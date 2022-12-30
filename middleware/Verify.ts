@@ -17,6 +17,19 @@ export const verify = async (
     where: {
       uuid: req.session.userid,
     },
+    select: {
+      uuid: true,
+      email: true,
+      username: true,
+      number: true,
+      createdAt: true,
+      UpdatedAt: true,
+      conversations: {
+        where: {
+          sender: req.session.userid,
+        },
+      },
+    },
   });
 
   if (!user)
@@ -26,39 +39,57 @@ export const verify = async (
       message: "User Not Found",
     });
 
-  req.session.user = user.uuid;
+  req.session.user = user;
   next();
 };
 
-export const verifyConversation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (!req.session.user) {
-    return next();
-  }
+// export const verifyConversation = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   if (!req.session.user) {
+//     return next();
+//   }
 
-  const conversation = await prisma.conversation.findUnique({
-    where: {
-      uuid: req.session.user,
-    },
-    select: {
-      uuid: true,
-      sender: true,
-      receiver: true,
-    },
-  });
+//   const user = await prisma.user.findUnique({
+//     where: {
+//       uuid: req.session.user.uuid,
+//     },
+//     include: {
+//       conversations: true,
+//     },
+//   });
 
-  if (!conversation)
-    return res.status(404).json({
-      status: 404,
-      statusText: "NOT FOUND",
-      message: "User Not Found",
-    });
+//   if (!user)
+//     return res
+//       .status(404)
+//       .json({
+//         status: 400,
+//         statusText: "NOT FOUND",
+//         message: "User Not Found",
+//       });
 
-  req.session.conversation = conversation.uuid;
-  req.session.receiver = conversation.receiver;
+//   const conversation = await prisma.conversation.findUnique({
+//     where: {
+//       uuid: user.conversations.
+//     },
+//     select: {
+//       uuid: true,
+//       sender: true,
+//       receiver: true,
+//     },
+//   });
 
-  next();
-};
+//   if (!conversation)
+//     return res.status(404).json({
+//       status: 404,
+//       statusText: "NOT FOUND",
+//       message: "Conversation Not Found",
+//     });
+
+//   req.session.conversation = conversation.uuid;
+//   req.session.receiver = conversation.receiver;
+
+//   next();
+// };
